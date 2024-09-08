@@ -18,7 +18,7 @@ public class GpgController {
             @RequestParam("passphrase") String passphrase) {
 
         try (InputStream inputStream = file.getInputStream()) {
-            boolean isValid = GpgKeyValidator.validatePassphrase(inputStream, passphrase);
+            boolean isValid = GpgKeyValidator.validatePassphrase(inputStream.readAllBytes(), passphrase);
             if (isValid) {
                 return ResponseEntity.ok("Valid GPG key and passphrase.");
             } else {

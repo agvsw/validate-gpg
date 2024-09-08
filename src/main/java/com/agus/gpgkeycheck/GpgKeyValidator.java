@@ -5,6 +5,7 @@ import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.operator.jcajce.JcaKeyFingerprintCalculator;
 import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyDecryptorBuilder;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Security;
@@ -22,8 +23,8 @@ public class GpgKeyValidator {
         }
     }
 
-    public static boolean validatePassphrase(InputStream secretKeyInputStream, String passphrase) {
-        try {
+    public static boolean validatePassphrase(byte[] secretKeyBytes, String passphrase) {
+        try (ByteArrayInputStream secretKeyInputStream = new ByteArrayInputStream(secretKeyBytes)) {
             PGPSecretKeyRingCollection secretKeyRingCollection = readSecretKeyRingCollection(secretKeyInputStream);
 
             Iterator<PGPSecretKeyRing> keyRings = secretKeyRingCollection.getKeyRings();
